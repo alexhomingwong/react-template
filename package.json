@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/alexwong-crc/react-template/issues"
   },
-  "homepage": "https://github.com/alexwong-crc/react-template#readme"
+  "homepage": "https://github.com/alexwong-crc/react-template#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
