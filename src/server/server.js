@@ -5,7 +5,7 @@ export default class Server {
     this.app = express()
     this.app.use(express.static('dist/public'))
   }
-  start() {
+  start = () => {
     return new Promise((resolve, reject) => {
       try {
         const PORT = process.env.PORT || 3000
@@ -18,7 +18,7 @@ export default class Server {
       }
     })
   }
-  stop() {
+  stop = () => {
     return new Promise((resolve, reject) => {
       try {
         this.server.close(() => {
