@@ -22,7 +22,7 @@ export default class Server {
     return new Promise((resolve, reject) => {
       try {
         this.server.close(() => {
-          resolve()
+          resolve('Server has stopped')
         })
       } catch (error) {
         console.error(error.message)
