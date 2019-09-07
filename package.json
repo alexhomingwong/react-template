@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest .src",
-    "build": "yarn build-server && yarn build-client",
-    "build-server": "babel src/server -d ./dist",
-    "build-client": "babel src/client --copy-files --out-dir ./dist/public",
+    "build-babel": "yarn build-babel-server && yarn build-babel-client",
+    "build-babel-server": "babel src/server -d ./dist",
+    "build-babel-client": "babel src/client --copy-files --out-dir ./dist/public",
     "start": "node ./dist"
   },
   "repository": {
@@ -22,13 +22,16 @@
   "homepage": "https://github.com/alexwong-crc/react-template#readme",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
     "jest": "^24.9.0"
   }
 }
