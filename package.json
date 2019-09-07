@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "jest .src",
+    "build": "rm -rf dist && webpack",
     "build-babel": "yarn build-babel-server && yarn build-babel-client",
     "build-babel-server": "babel src/server -d ./dist",
     "build-babel-client": "babel src/client --copy-files --out-dir ./dist/public",
-    "start": "node ./dist"
+    "start": "node ./dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,10 @@
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "jest": "^24.9.0"
+    "babel-loader": "^8.0.6",
+    "jest": "^24.9.0",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.8",
+    "webpack-node-externals": "^1.7.2"
   }
 }
