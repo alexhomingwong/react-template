@@ -1,5 +1,6 @@
 let path = require('path')
 let nodeExternals = require('webpack-node-externals')
+let htmlWebpackPlugin = require('html-webpack-plugin')
 
 const client = {
   entry: {
@@ -24,7 +25,8 @@ const client = {
         }
       }
     ]
-  }
+  },
+  plugins: [new htmlWebpackPlugin({template: 'src/client/index.html'})]
 }
 
 const server = {
