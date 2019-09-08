@@ -1,12 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {HeaderOne} from './components/atoms/HeaderOne'
 
-const App = () => {
-  return (
-    <div>
-      <h1>Welcome to my react app</h1>
-    </div>
-  )
-}
-
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(
+  <HeaderOne>React Boilerplate</HeaderOne>,
+  document.getElementById('root')
+)
