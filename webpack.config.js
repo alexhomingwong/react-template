@@ -1,59 +1,36 @@
-let path = require('path')
-let nodeExternals = require('webpack-node-externals')
-let htmlWebpackPlugin = require('html-webpack-plugin')
+let path = require("path");
+let htmlWebpackPlugin = require("html-webpack-plugin");
 
-const client = {
+module.exports = {
   entry: {
-    client: './src/client/app.js'
+    main: "./src/app.tsx"
   },
-  mode: 'development',
-  target: 'web',
+  mode: "development",
+  target: "web",
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist/public')
+    filename: "[name].js",
+    path: path.resolve(__dirname, "public")
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
+          loader: "babel-loader"
         }
-      }
-    ]
-  },
-  plugins: [new htmlWebpackPlugin({template: 'src/client/index.html'})]
-}
-
-const server = {
-  entry: {
-    server: './src/server/index.js'
-  },
-  mode: 'development',
-  target: 'node',
-  output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist')
-  },
-  module: {
-    rules: [
+      },
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
+        test: /\.html$/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
+          loader: "html-loader"
         }
       }
     ]
   },
-  externals: [nodeExternals()]
-}
-
-module.exports = [client, server]
+  plugins: [
+    new htmlWebpackPlugin({
+      template: "src/index.html"
+    })
+  ]
+};

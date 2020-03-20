@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest .src",
-    "build": "rm -rf dist && webpack",
-    "build-babel": "yarn build-babel-server && yarn build-babel-client",
-    "build-babel-server": "babel src/server -d ./dist",
-    "build-babel-client": "babel src/client --copy-files --out-dir ./dist/public",
+    "build": "webpack --mode development",
     "start": "node ./dist/server.js"
   },
   "repository": {
@@ -38,11 +35,11 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.4.0",
+    "html-loader": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.9.0",
     "typescript": "^3.8.3",
     "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.8",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-cli": "^3.3.8"
   }
 }
