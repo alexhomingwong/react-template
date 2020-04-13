@@ -13,6 +13,8 @@
   - [React](#react)
   - [Source map](#source-map)
   - [Hot reloading](#hot-reloading)
+- [Typescript](#typescript)
+  - [Linting](#linting)
 
 ## Setting up the project
 
@@ -262,3 +264,192 @@ With this package, we can now run a dev server and anytime there are changes it 
     },
 }
 ```
+
+## Typescript
+
+With the above setup, you will have the basics of a React project. You can start adding testing and styling libraries; however, for larger projects you may want to add typescript.
+
+Typescript itself is a compiler which means we can replace babel; however, babel has a typescript preset which we can use. There are benefits of using babel with typescript, but the main one is that babel is already set up in this project, so we might as well stick with it.
+
+First lets add the babel plugins needed for compiling typescript.
+
+`yarn add --dev @babel/preset-typescript @babel/plugin-proposal-class-properties @babel/plugin-proposal-object-rest-spread`
+
+Then update the config in the `.babelrc`.
+
+```json
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread"
+  ]
+}
+```
+
+Now add typescript and a `tsconfig.json` in the root directory. the `tsconfig.json` can be quite difficult to understand, but below are some of the basic settings which will get typescript to work. You can look to customise it more for your own project. The typescript documentation can be found here: https://www.typescriptlang.org/tsconfig.
+
+```bash
+yarn add --dev typescript
+```
+
+```json
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noEmit": true,
+    "strict": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "noImplicitAny": true
+  },
+  "include": ["src"]
+}
+```
+
+Before we can refactor our js files to typescript, we will need to get the types for the react modules. Then refactor the `src/index.js` into a separate `src/App.tsx` and a `src/index.ts`.
+
+```bash
+yarn add --dev @types/react @types/react-dom
+```
+
+```ts
+// src/App.tsx
+import React from "react";
+
+const App: React.FC = () => <div>Luffy will be pirate king!</div>;
+
+export default App;
+```
+
+```ts
+// src/index.tsx
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+Now we will need to edit our webpack to look for `.ts` and `.tsx` files. Furthermore, we need webpack to automatically resolve to `.ts` and `.tsx` files when importing.
+
+```js
+module.exports = {
+  ...,
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+  module: {
+    rules: {
+      { test: /\.ts|x$/, loader: "babel-loader", exclude: /node_modules/ },
+    }
+  }
+}
+```
+
+One last thing, we need make the hot reloading work with typescript. To get it to work, we will need to download a separate plugin for webpack, `fork-ts-checker-webpack-plugin`.
+
+```js
+const ForkTSCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+
+module.exports = {
+  ...,
+  plugins: {
+    ...,
+    new ForkTSCheckerWebpackPlugin({
+      tsconfig: path.resolve(__dirname, "tsconfig.json"),
+      async: false,
+      checkSyntacticErrors: true,
+    }),
+  },
+}
+```
+
+### Linting
+
+ESLint now has support for typescript which makes things a lot easier. We will need to add the following dependencies to the project:
+
+```bash
+yarn add --dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react
+```
+
+The linting rules are then placed in the `.eslintrc` file. ESLint will require a parser to read the code which we will be using `@typescript-eslint/parser`, and then instead of specifying each rule we want to use, we can have ESLint extend a set of given rules. We will be basing our project off of the `@typescript-eslint/eslint-plugin` and the `eslint-plugin-react`.
+
+```json
+{
+  "parser": "@typescript-eslint/parser", // Specify the parser
+  "extends": [
+    "plugin:react/recommended", // Use React recommended rules
+    "plugin:@typescript-eslint/recommended" // Use Typescript recommended rules
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true // Allow JSX
+    }
+  },
+  "rules": {
+    // Overwrite rules here
+  },
+  "settings": {
+    "react": {
+      "version": "detect" // Auto detect React version
+    }
+  }
+}
+```
+
+Now lets add prettier to help better format the code.
+
+```bash
+yarn add --dev prettier eslint-config-prettier eslint-plugin-prettier
+```
+
+Add a `.prettierc` file for the prettier config. Below is a simple example of some prettier settings.
+
+```json
+{
+  "semi": true,
+  "trailingComma": "all",
+  "singleQuote": true,
+  "printWidth": 120,
+  "tabWidth": 2
+}
+```
+
+With prettier we will need to update the eslint config.
+
+```json
+{
+  "parser": "@typescript-eslint/parser", // Specify the parser
+  "extends": [
+    "plugin:react/recommended", // Use React recommended rules
+    "plugin:@typescript-eslint/recommended", // Use Typescript recommended rules
+    "prettier/@typescript-eslint", // This will disable conflicting rules between typescript and prettier
+    "plugin:prettier/recommended" // Shows prettier errors as eslint error. Make sure this is always the last configuration in the extends array.
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018, // Allows for the parsing of modern ECMAScript features
+    "sourceType": "module", // Allows for the use of imports
+    "ecmaFeatures": {
+      "jsx": true // Allow JSX
+    }
+  },
+  "rules": {
+    // Overwrite rules here
+  },
+  "settings": {
+    "react": {
+      "version": "detect" // Auto detect React version
+    }
+  }
+}
+```
+
+This article has a great explanation on setting up eslint, prettier for a Typescript React project in VSCode, https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project.
