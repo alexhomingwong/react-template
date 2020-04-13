@@ -13,9 +13,10 @@
   - [React](#react)
   - [Source map](#source-map)
   - [Hot reloading](#hot-reloading)
-  - [Absolute imports](#absolute-imports)
 - [Typescript](#typescript)
+  - [Installation](#installing-typescript)
   - [Linting](#linting)
+  - [Absolute imports](#absolute-imports)
 
 ## Setting up the project
 
@@ -266,54 +267,13 @@ With this package, we can now run a dev server and anytime there are changes it 
 }
 ```
 
-### Absolute imports
-
-Relative imports can get very messy in a large project. To combat this, we can create some custom absolute imports. When we create the custom absolute imports, we will need to let babel and typescript know what these custom imports really map too.
-
-First configure typescript config by adding a `paths` field with the custom imports. You will need to `*` to match all files in that directory. Note, be careful that your custom imports do not conflict with any modules that may come from `node_modules`.
-
-```json
-{
-  ...,
-  "compilerOptions":{
-    "baseUrl": ".",
-    "paths": {
-      // custom paths go here
-      "@/components/*": ["src/components/*"]
-    }
-  }
-}
-```
-
-Then we will need to add a plugin for babel.
-
-```bash
-yarn add --dev babel-plugin-module-resolver
-```
-
-In the `.babelrc`, add the same custom imports but note that the `*` is not needed.
-
-```json
-{
-  "plugins": [
-    [
-      "module-resolver",
-      {
-        "alias": {
-          // Add custom imports here
-          "@/components": "./src/components"
-        }
-      }
-    ]
-  ]
-}
-```
-
 ## Typescript
 
 With the above setup, you will have the basics of a React project. You can start adding testing and styling libraries; however, for larger projects you may want to add typescript.
 
 Typescript itself is a compiler which means we can replace babel; however, babel has a typescript preset which we can use. There are benefits of using babel with typescript, but the main one is that babel is already set up in this project, so we might as well stick with it.
+
+### Installing typescript
 
 First lets add the babel plugins needed for compiling typescript.
 
@@ -497,3 +457,46 @@ With prettier we will need to update the eslint config.
 ```
 
 This article has a great explanation on setting up eslint, prettier for a Typescript React project in VSCode, https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project.
+
+### Absolute imports
+
+Relative imports can get very messy in a large project. To combat this, we can create some custom absolute imports. When we create the custom absolute imports, we will need to let babel and typescript know what these custom imports really map too.
+
+First configure typescript config by adding a `paths` field with the custom imports. You will need to `*` to match all files in that directory. Note, be careful that your custom imports do not conflict with any modules that may come from `node_modules`.
+
+```json
+{
+  ...,
+  "compilerOptions":{
+    "baseUrl": ".",
+    "paths": {
+      // custom paths go here
+      "@/components/*": ["src/components/*"]
+    }
+  }
+}
+```
+
+Then we will need to add a plugin for babel.
+
+```bash
+yarn add --dev babel-plugin-module-resolver
+```
+
+In the `.babelrc`, add the same custom imports but note that the `*` is not needed.
+
+```json
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          // Add custom imports here
+          "@/components": "./src/components"
+        }
+      }
+    ]
+  ]
+}
+```
