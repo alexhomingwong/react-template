@@ -1,4 +1,4 @@
-# Bob
+# How to set up React with Babel, Webpack
 
 ## Content
 
