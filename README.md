@@ -1,4 +1,4 @@
-# How to set up React with Babel, Webpack
+# How to set up React with Babel, Webpack v2
 
 ## Content
 
